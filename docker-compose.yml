@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bicicletas-frontend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - API_URL=${API_URL:-http://localhost:3000/api}
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    networks:
+      - bicicletas-network
+
+  # Descomenta esto cuando crees el backend
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: bicicletas-backend
+  #   ports:
+  #     - "${BACKEND_PORT:-3000}:3000"
+  #   environment:
+  #     - NODE_ENV=${NODE_ENV:-production}
+  #     - DATABASE_URL=${DATABASE_URL}
+  #   restart: unless-stopped
+  #   networks:
+  #     - bicicletas-network
+
+networks:
+  bicicletas-network:
+    driver: bridge
